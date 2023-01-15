@@ -1,0 +1,83 @@
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "defaultProfile": "{8c1b3c8e-89fc-41ef-9286-33377fd43076}",
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "useAcrylic": true
+        },
+        "list": 
+        [
+            {
+                "colorScheme": "Nsbx",
+                "font": 
+                {
+                    "face": "MesloLGS NF"
+                },
+                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+                "hidden": false,
+                "name": "Ubuntu - WSL 1",
+                "opacity": 60,
+                "source": "Windows.Terminal.Wsl",
+                "startingDirectory": ".",
+                "useAcrylic": true
+            },
+            {
+                "colorScheme": "Nsbx",
+                "commandline": "C:\\WINDOWS\\system32\\wsl.exe -d Ubuntu-20.04",
+                "font": 
+                {
+                    "face": "MesloLGS NF"
+                },
+                "guid": "{8c1b3c8e-89fc-41ef-9286-33377fd43076}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png",
+                "name": "Ubuntu - WSL 2",
+                "opacity": 60,
+                "startingDirectory": "~/Dev",
+                "useAcrylic": true
+            },
+            {
+                "colorScheme": "Nsbx",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell"
+            },
+            {
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "cmd"
+            }
+        ]
+    },
+    "schemes": 
+    [
+        {
+            "name": "Nsbx",
+            "background": "#1B1B1B",
+            "black": "#000000",
+            "blue": "#0092FF",
+            "brightBlack": "#444444",
+            "brightBlue": "#4C9FFE",
+            "brightCyan": "#A1DDFE",
+            "brightGreen": "#71F47E",
+            "brightPurple": "#FF5969",
+            "brightRed": "#FF6346",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFD035",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#54C7FC",
+            "foreground": "#FFFFFF",
+            "green": "#44DB5E",
+            "purple": "#FF2851",
+            "red": "#FF3824",
+            "selectionBackground": "#FFFFFF",
+            "white": "#FFFFFF",
+            "yellow": "#FFCD00"
+        }
+    ],
+    "windowingBehavior": "useAnyExisting"
+}

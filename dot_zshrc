@@ -1,0 +1,16 @@
+# ~/.zshrc
+# =============================================================================
+# Executed by Z shell for interactive shells.
+
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+source ~/.bash_functions
+source ~/.bash_aliases
+source ~/.bash_exports
+
+eval "$(starship init zsh)"

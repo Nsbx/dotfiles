@@ -1,0 +1,22 @@
+# ~/.bash_aliases
+# =============================================================================
+# Shell aliases sourced by `~/.bashrc` and `~/.zshrc`.
+
+###> Directory ###
+alias home="cd ~"
+alias dev="cd ~/Dev"
+###< Directory
+
+###> Symfony ###
+alias sf="symfony"
+alias composer="symfony composer"
+###< Symfony
+
+###> File Edit ###
+alias edit:zshrc="nano ~/.zshrc"
+alias edit:starship="nano ~/.config/starship.toml"
+###> File Edit ###
+
+###> Various ###
+alias weather='curl --silent --compressed --max-time 10 --url "https://wttr.in/?format=%l:+(%C)+%c++%t+\[%h,+%w\]"'
+###< Various ###
