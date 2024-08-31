@@ -1,0 +1,11 @@
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+source ~/.functions
+source ~/.aliases
+source ~/.exports
+
+eval "$(starship init zsh)"

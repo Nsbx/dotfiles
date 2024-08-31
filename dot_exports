@@ -1,0 +1,8 @@
+# ~/.exports
+# =============================================================================
+# Shell exports sourced by `~/.bashrc` and `~/.zshrc`.
+
+export GITHUB_USERNAME="nsbx"
+export EDITOR="nano"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

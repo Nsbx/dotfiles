@@ -1,0 +1,37 @@
+# ~/.aliases
+# =============================================================================
+# Shell aliases sourced by `~/.bashrc` and `~/.zshrc`.
+
+###> WSL Related ###
+alias ssh='ssh.exe'
+alias ssh-add='ssh-add.exe'
+###< WSL Related ###
+
+###> Directory ###
+alias home="cd ~"
+alias dev="cd ~/Dev"
+###< Directory
+
+###> PHP ###
+alias php:versions="sudo update-alternatives --config php"
+###< PHP ###
+
+###> Symfony ###
+alias sf="symfony"
+alias composer="symfony composer"
+###< Symfony ###
+
+###> Docker ###
+alias docker:ps='docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"'
+###< Docker ###
+
+###> File Edit ###
+alias edit:bashrc="$EDITOR ~/.bashrc"
+alias edit:zshrc="$EDITOR ~/.zshrc"
+alias edit:aliases="$EDITOR ~/.bash_aliases"
+alias edit:starship="$EDITOR ~/.config/starship.toml"
+###> File Edit ###
+
+###> Various ###
+alias weather='curl --silent --compressed --max-time 10 --url "https://wttr.in/?format=%l:+(%C)+%c++%t+\[%h,+%w\]"'
+###< Various ###

@@ -1,0 +1,34 @@
+# ~/.gitconfig_alias
+# =============================================================================
+# Aliases for Git sourced by `~/.gitconfig`.
+
+[alias]
+    # Lists aliases.
+    aliases = config --get-regexp ^alias\\.
+
+    # Amends the currently staged files to the latest commit.
+    amend = commit --amend --no-edit
+
+    # Shows the current working tree status using the short format.
+    s = status -sb
+
+    # Shows verbose output about branches.
+    branches = branch -a
+
+    # Run merge with meld tool
+    merge = mergetool -t meld
+
+    # Shows short SHA, description, and history graph of last 20 commits.
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+    # Undos commit and leaves files (only for non-public commits).
+    reset-last-commit = reset HEAD~1 --soft
+
+    # Unstash & reset all change
+    reset = checkout .
+
+    # Shows verbose output about remotes.
+    remotes = remote -v
+
+    # Commits as Work in Progress.
+    wip = commit -am "WIP"
