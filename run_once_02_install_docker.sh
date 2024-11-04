@@ -38,13 +38,12 @@ sudo groupadd -f docker
 sudo usermod -aG docker $USER
 sudo chown root:docker /var/run/docker.sock
 
-# Configuration du démarrage automatique de Docker et des permissions
+# Configuration du démarrage automatique de Docker
 echo -e "🔄 ${YELLOW}Configuration du démarrage automatique...${NC}"
-DOCKER_START_CMD='\n# Démarrage automatique de Docker et configuration des permissions
+DOCKER_START_CMD='\n# Démarrage automatique de Docker
 if ! service docker status >/dev/null 2>&1; then
     sudo service docker start &>/dev/null
-fi
-sudo chown root:docker /var/run/docker.sock &>/dev/null'
+fi'
 
 # Liste des fichiers de profil à vérifier
 PROFILE_FILES=("$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.profile" "$HOME/.bash_profile")
@@ -56,12 +55,20 @@ for profile_file in "${PROFILE_FILES[@]}"; do
     fi
 done
 
-# Appliquer les changements immédiatement
-sudo chown root:docker /var/run/docker.sock
-newgrp docker << EONG
+echo -e "🔄 ${YELLOW}Application des permissions...${NC}"
+sudo service docker restart >/dev/null 2>&1
+sudo chmod 666 /var/run/docker.sock >/dev/null 2>&1
+
+exec sg docker -c '
 echo -e "\n✨ ${GREEN}Installation de Docker terminée !${NC} 🎉\n"
 
 echo -e "${YELLOW}Versions installées :${NC}"
 echo -e "Docker : $(docker --version)"
 echo -e "Docker Compose : $(docker compose version)"
-EONG
+
+# Test de Docker
+if docker ps >/dev/null 2>&1; then
+    echo -e "\n${GREEN}✅ Docker est fonctionnel !${NC}"
+else
+    echo -e "\n${YELLOW}⚠️  Si Docker ne fonctionne pas, exécutez :${NC} ${BLUE}wsl --shutdown${NC}"
+fi'
