@@ -54,10 +54,22 @@ else
     echo -e "✅ ${GREEN}Starship${NC} est déjà installé"
 fi
 
-# Définir zsh comme shell par défaut si ce n'est pas déjà le cas
+# Définir zsh comme shell par défaut
+echo -e "🔧 Configuration de ${BLUE}ZSH${NC} comme shell par défaut..."
 if [ "$SHELL" != "/usr/bin/zsh" ]; then
-    echo -e "🔧 Configuration de ${BLUE}ZSH${NC} comme shell par défaut..."
-    chsh -s $(which zsh) >/dev/null 2>&1
+    # Changer le shell par défaut
+    sudo chsh -s $(which zsh) $USER >/dev/null 2>&1
+    
+    # Ajouter l'exécution de zsh dans .bashrc si ce n'est pas déjà fait
+    if ! grep -q "exec zsh" ~/.bashrc; then
+        echo -e "\n# Launch Zsh\nif [ -t 1 ]; then\n  exec zsh\nfi" >> ~/.bashrc
+    fi
+fi
+
+# S'assurer que zsh est listé dans /etc/shells
+if ! grep -q "$(which zsh)" /etc/shells; then
+    echo "📝 Ajout de ZSH à /etc/shells..."
+    command -v zsh | sudo tee -a /etc/shells >/dev/null 2>&1
 fi
 ###> ZSH ###
 
