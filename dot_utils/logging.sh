@@ -100,12 +100,17 @@ log_section() {
     echo -e "\n${LOG_COLORS[bold]}${LOG_ICONS[setup]} $1${LOG_COLORS[default]}\n"
 }
 
-# Fonction pour les opérations silencieuses avec retour de statut
+# Fonction pour les opérations silencieuses avec gestion des logs
 run_silent() {
     local command=$1
+    local success_msg=${2:-"Opération réussie"}
+    local error_msg=${3:-"Une erreur est survenue"}
+    
     if eval "$command" >/dev/null 2>&1; then
+        log_success "$success_msg"
         return 0
     else
+        log_error "$error_msg"
         return 1
     fi
 }
