@@ -6,3 +6,4 @@ export GITHUB_USERNAME="nsbx"
 export EDITOR="nano"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export DOCKER_HOST=tcp://localhost:2375
