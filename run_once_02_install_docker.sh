@@ -59,9 +59,15 @@ echo -e "🔄 ${YELLOW}Application des permissions...${NC}"
 sudo service docker restart >/dev/null 2>&1
 sudo chmod 666 /var/run/docker.sock >/dev/null 2>&1
 
-exec sg docker -c '
-echo -e "\n✨ ${GREEN}Installation de Docker terminée !${NC} 🎉\n"
+cat << 'EOF' > /tmp/docker_finish.sh
+#!/bin/bash
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+BOLD='\033[1m'
 
+echo -e "\n✨ ${GREEN}Installation de Docker terminée !${NC} 🎉\n"
 echo -e "${YELLOW}Versions installées :${NC}"
 echo -e "Docker : $(docker --version)"
 echo -e "Docker Compose : $(docker compose version)"
@@ -71,4 +77,10 @@ if docker ps >/dev/null 2>&1; then
     echo -e "\n${GREEN}✅ Docker est fonctionnel !${NC}"
 else
     echo -e "\n${YELLOW}⚠️  Si Docker ne fonctionne pas, exécutez :${NC} ${BLUE}wsl --shutdown${NC}"
-fi'
+fi
+EOF
+
+chmod +x /tmp/docker_finish.sh
+
+# Recharger les groupes et exécuter le script d'affichage
+exec sg docker bash /tmp/docker_finish.sh
