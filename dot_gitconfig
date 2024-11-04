@@ -8,18 +8,14 @@
     email = 8930930+Nsbx@users.noreply.github.com
     name = Nsbx
 [core]
-    # Store global exclusions into a custom file.
     excludesfile = ~/.gitignore_global
     sshCommand = ssh.exe
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
 [commit]
-    # Specify template file for new commit messages.
     template = ~/.git_message
 [help]
-    # Correct and execute mistyped commands.
     autocorrect = 1
 [include]
-    # Include aliases.
     path = .gitconfig_aliases
-
-    # Include extra configuration (if any).
     path = .gitconfig_local
