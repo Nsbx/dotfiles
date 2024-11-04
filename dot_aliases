@@ -1,6 +1,6 @@
-# ~/.aliases
+# dot_aliases
 # =============================================================================
-# Shell aliases sourced by `~/.bashrc` and `~/.zshrc`.
+# Alias pour le shell
 
 ###> WSL Related ###
 alias ssh='ssh.exe'
@@ -23,6 +23,9 @@ alias composer="symfony composer"
 
 ###> Docker ###
 alias docker:ps='docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Status}}"'
+alias docker:clean='docker system prune -af'
+alias docker:stop-all='docker stop $(docker ps -q)'
+alias docker:remove-all='docker rm $(docker ps -a -q)'
 ###< Docker ###
 
 ###> File Edit ###
@@ -32,6 +35,11 @@ alias edit:aliases="$EDITOR ~/.bash_aliases"
 alias edit:starship="$EDITOR ~/.config/starship.toml"
 ###> File Edit ###
 
-###> Various ###
+###> Utils ###
 alias weather='curl --silent --compressed --max-time 10 --url "https://wttr.in/?format=%l:+(%C)+%c++%t+\[%h,+%w\]"'
-###< Various ###
+alias myip='curl -s http://checkip.dyndns.org/ | sed "s/[a-zA-Z<>/ :]//g"'
+alias ports='netstat -tulanp'
+alias disk='df -h'
+alias mem='free -h'
+alias top='htop'
+###< Utils ###
