@@ -1,5 +1,5 @@
 # Chemins à synchroniser
-root = $HOME/dev
+root = /home/nsbx/dev
 root = /mnt/n/Dev
 
 # Préférences générales
