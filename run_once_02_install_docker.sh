@@ -2,94 +2,49 @@
 
 # run_once_02_install_docker.sh
 # =============================================================================
-# Installation et configuration de Docker
+# Configuration de Docker Desktop pour WSL
 
 # Charger les fonctions de logging
 source ~/.utils/logging.sh
 
-log_section "Installation de Docker"
+log_section "Configuration de Docker Desktop"
 
-# Installation des prérequis
-run_silent "sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg" \
-    "Prérequis installés" \
-    "Échec de l'installation des prérequis"
+# Vérifier si nous sommes dans WSL
+if ! grep -qi microsoft /proc/version; then
+    log_error "Ce script est conçu pour être exécuté dans WSL"
+    exit 1
+fi
 
-# Configuration du repository Docker
-log_pending "Configuration du repository Docker..."
-run_silent "sudo install -m 0755 -d /etc/apt/keyrings" \
-    "Dossier keyrings créé" \
-    "Échec de la création du dossier keyrings"
+# Vérifier si Docker Desktop est installé sur Windows
+if ! command -v docker.exe &> /dev/null; then
+    log_warning "Docker Desktop ne semble pas être installé sur Windows"
+    log_info "Veuillez installer Docker Desktop depuis : https://www.docker.com/products/docker-desktop/"
+    log_info "Après l'installation :"
+    log_info "1. Ouvrez Docker Desktop"
+    log_info "2. Allez dans Settings > Resources > WSL Integration"
+    log_info "3. Activez l'intégration pour votre distribution WSL"
+    exit 1
+fi
 
-run_silent "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg" \
-    "Clé GPG Docker ajoutée" \
-    "Échec de l'ajout de la clé GPG Docker"
+log_done "Configuration de Docker Desktop terminée !"
 
-run_silent "sudo chmod a+r /etc/apt/keyrings/docker.gpg" \
-    "Permissions de la clé GPG mises à jour" \
-    "Échec de la mise à jour des permissions de la clé GPG"
-
-# Ajout du repository Docker
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Installation de Docker
-run_silent "sudo apt-get update" \
-    "Repository Docker mis à jour" \
-    "Échec de la mise à jour du repository Docker"
-
-run_silent "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin" \
-    "Docker installé avec succès" \
-    "Échec de l'installation de Docker"
-
-# Configuration des permissions
-run_silent "sudo groupadd -f docker" \
-    "Groupe docker créé" \
-    "Échec de la création du groupe docker"
-
-run_silent "sudo usermod -aG docker $USER" \
-    "Utilisateur ajouté au groupe docker" \
-    "Échec de l'ajout de l'utilisateur au groupe docker"
-
-run_silent "sudo chown root:docker /var/run/docker.sock" \
-    "Permissions docker.sock mises à jour" \
-    "Échec de la mise à jour des permissions docker.sock"
-
-# Configuration du démarrage automatique
-DOCKER_START_CMD='\n# Démarrage automatique de Docker
-if ! service docker status >/dev/null 2>&1; then
-    sudo service docker start &>/dev/null
-fi'
-
-# Ajout aux fichiers de profil
-for profile_file in "$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.profile" "$HOME/.bash_profile"; do
-    if [ -f "$profile_file" ] && ! grep -q "service docker start" "$profile_file"; then
-        echo -e "$DOCKER_START_CMD" >> "$profile_file"
-        log_success "Démarrage automatique ajouté à $(basename $profile_file)"
-    fi
-done
-
-# Application des permissions
-run_silent "sudo service docker restart" \
-    "Service Docker redémarré" \
-    "Échec du redémarrage de Docker"
-
-run_silent "sudo chmod 666 /var/run/docker.sock" \
-    "Permissions docker.sock mises à jour" \
-    "Échec de la mise à jour des permissions docker.sock"
-
-log_done "Installation de Docker terminée !"
-
-# Afficher les versions installées
+# Afficher les informations de version
 log_section "Versions installées"
-if command_exists docker; then
-    log_version "Docker" "$(docker --version | cut -d' ' -f3 | tr -d ',')"
-    log_version "Docker Compose" "$(docker compose version --short)"
+if command -v docker.exe &> /dev/null; then
+    log_version "Docker Desktop" "$(docker.exe --version | cut -d' ' -f3 | tr -d ',')"
+    log_version "Docker Compose" "$(docker-compose.exe version --short)"
     
-    if docker ps >/dev/null 2>&1; then
-        log_success "Docker est fonctionnel !"
+    if docker.exe ps &>/dev/null; then
+        log_success "Docker Desktop est fonctionnel !"
     else
-        log_warning "Si Docker ne fonctionne pas, exécutez : wsl --shutdown"
+        log_warning "Docker Desktop ne semble pas être en cours d'exécution"
+        log_info "Veuillez démarrer Docker Desktop sur Windows"
     fi
 fi
+
+# Instructions finales
+log_section "Instructions supplémentaires"
+echo -e "\nPour utiliser Docker Desktop :"
+echo "1. Assurez-vous que Docker Desktop est en cours d'exécution sur Windows"
+echo "2. Vérifiez que l'intégration WSL est activée dans les paramètres"
+echo "3. Redémarrez votre terminal WSL pour appliquer les modifications"

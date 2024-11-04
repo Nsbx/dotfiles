@@ -2,9 +2,22 @@
 # =============================================================================
 # Alias pour le shell
 
+###> Utils ###
+# Permet à sudo d'utiliser les alias
+alias sudo='sudo '
+alias weather='curl --silent --compressed --max-time 10 --url "https://wttr.in/?format=%l:+(%C)+%c++%t+\[%h,+%w\]"'
+alias myip='curl -s http://checkip.dyndns.org/ | sed "s/[a-zA-Z<>/ :]//g"'
+alias ports='netstat -tulanp'
+alias disk='df -h'
+alias mem='free -h'
+alias top='htop'
+###< Utils ###
+
 ###> WSL Related ###
 alias ssh='ssh.exe'
 alias ssh-add='ssh-add.exe'
+alias docker='docker.exe'
+alias docker-compose='docker-compose.exe'
 ###< WSL Related ###
 
 ###> Directory ###
@@ -35,11 +48,3 @@ alias edit:aliases="$EDITOR ~/.bash_aliases"
 alias edit:starship="$EDITOR ~/.config/starship.toml"
 ###> File Edit ###
 
-###> Utils ###
-alias weather='curl --silent --compressed --max-time 10 --url "https://wttr.in/?format=%l:+(%C)+%c++%t+\[%h,+%w\]"'
-alias myip='curl -s http://checkip.dyndns.org/ | sed "s/[a-zA-Z<>/ :]//g"'
-alias ports='netstat -tulanp'
-alias disk='df -h'
-alias mem='free -h'
-alias top='htop'
-###< Utils ###
