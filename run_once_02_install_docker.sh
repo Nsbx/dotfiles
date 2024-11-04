@@ -36,10 +36,15 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 echo -e "👤 ${YELLOW}Configuration des permissions utilisateur...${NC}"
 sudo groupadd -f docker
 sudo usermod -aG docker $USER
+sudo chown root:docker /var/run/docker.sock
 
-# Configuration du démarrage automatique de Docker
+# Configuration du démarrage automatique de Docker et des permissions
 echo -e "🔄 ${YELLOW}Configuration du démarrage automatique...${NC}"
-DOCKER_START_CMD='\n# Démarrage automatique de Docker\nif ! service docker status >/dev/null 2>&1; then\n    sudo service docker start &>/dev/null\nfi'
+DOCKER_START_CMD='\n# Démarrage automatique de Docker et configuration des permissions
+if ! service docker status >/dev/null 2>&1; then
+    sudo service docker start &>/dev/null
+fi
+sudo chown root:docker /var/run/docker.sock &>/dev/null'
 
 # Liste des fichiers de profil à vérifier
 PROFILE_FILES=("$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.profile" "$HOME/.bash_profile")
@@ -51,8 +56,12 @@ for profile_file in "${PROFILE_FILES[@]}"; do
     fi
 done
 
+# Appliquer les changements immédiatement
+sudo chown root:docker /var/run/docker.sock
+newgrp docker << EONG
 echo -e "\n✨ ${GREEN}Installation de Docker terminée !${NC} 🎉\n"
 
 echo -e "${YELLOW}Versions installées :${NC}"
 echo -e "Docker : $(docker --version)"
 echo -e "Docker Compose : $(docker compose version)"
+EONG
