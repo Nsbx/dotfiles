@@ -1,76 +1,82 @@
 #!/bin/bash
 
-# Couleurs et styles
-BLUE='\033[0;34m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-BOLD='\033[1m'
+# run_once_00_install_packages.sh
+# =============================================================================
+# Installation des packages de base
 
-echo -e "\n${BOLD}🚀 Démarrage de l'installation des dépendances...${NC}\n"
+# Charger les fonctions de logging
+source ~/.utils/logging.sh
 
+log_section "Installation des dépendances"
+
+# Fonction d'installation de package
 install_pkg() {
-    pkg=$1
+    local pkg=$1
     if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "installed"; then
-        echo -e "📦 Installation de ${BLUE}$pkg${NC}..."
-        sudo apt-get install -y "$pkg" >/dev/null 2>&1
+        log_install_start "$pkg"
+        if run_silent "sudo apt-get install -y $pkg"; then
+            log_install_done "$pkg"
+        else
+            log_error "Échec de l'installation de $pkg"
+            return 1
+        fi
     else
-        echo -e "✅ ${GREEN}$pkg${NC} est déjà installé"
+        log_install_skip "$pkg"
     fi
 }
 
-install_pkgs() {
-    for pkg in $1; do
-        install_pkg "$pkg"
-    done
-}
-
 # Mettre à jour les dépôts
-echo -e "\n🔄 ${YELLOW}Mise à jour de la liste des paquets...${NC}"
-sudo apt-get update >/dev/null 2>&1
+log_info "Mise à jour de la liste des paquets..."
+run_silent "sudo apt-get update" "Mise à jour des dépôts"
 
 # Installer les packages de base
-echo -e "\n🛠️  ${YELLOW}Installation des paquets de base...${NC}"
-install_pkgs "curl neofetch git htop"
+log_section "Installation des paquets de base"
+for pkg in curl neofetch git htop; do
+    install_pkg "$pkg"
+done
 
 ###> ZSH ###
-echo -e "\n🐚 ${YELLOW}Configuration de l'environnement ZSH...${NC}"
+log_section "Configuration de l'environnement ZSH"
 install_pkg "zsh"
 
 # Configuration de zsh-autosuggestions
 if [ ! -d ~/.zsh/zsh-autosuggestions ]; then
-    echo -e "🔌 Installation de ${BLUE}zsh-autosuggestions${NC}..."
-    mkdir -p ~/.zsh >/dev/null 2>&1
-    git clone -q https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions >/dev/null 2>&1
+    log_install_start "zsh-autosuggestions"
+    if run_silent "git clone -q https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions"; then
+        log_install_done "zsh-autosuggestions"
+    else
+        log_error "Échec de l'installation de zsh-autosuggestions"
+    fi
 else
-    echo -e "✅ ${GREEN}zsh-autosuggestions${NC} est déjà installé"
+    log_install_skip "zsh-autosuggestions"
 fi
 
 # Installation de Starship
-if ! command -v starship >/dev/null 2>&1; then
-    echo -e "🚀 Installation de ${BLUE}Starship prompt${NC}..."
-    curl -sS https://starship.rs/install.sh | sh -s -- -y >/dev/null 2>&1
+if ! command_exists starship; then
+    log_install_start "Starship prompt"
+    if run_silent "curl -sS https://starship.rs/install.sh | sh -s -- -y"; then
+        log_install_done "Starship prompt"
+    else
+        log_error "Échec de l'installation de Starship"
+    fi
 else
-    echo -e "✅ ${GREEN}Starship${NC} est déjà installé"
+    log_install_skip "Starship prompt"
 fi
 
 # Définir zsh comme shell par défaut
-echo -e "🔧 Configuration de ${BLUE}ZSH${NC} comme shell par défaut..."
 if [ "$SHELL" != "/usr/bin/zsh" ]; then
-    # Changer le shell par défaut
-    sudo chsh -s $(which zsh) $USER >/dev/null 2>&1
-    
-    # Ajouter l'exécution de zsh dans .bashrc si ce n'est pas déjà fait
-    if ! grep -q "exec zsh" ~/.bashrc; then
-        echo -e "\n# Launch Zsh\nif [ -t 1 ]; then\n  exec zsh\nfi" >> ~/.bashrc
+    log_pending "Configuration de ZSH comme shell par défaut"
+    if run_silent "sudo chsh -s $(which zsh) $USER"; then
+        log_success "ZSH est maintenant votre shell par défaut"
+    else
+        log_error "Échec du changement de shell par défaut"
     fi
 fi
 
-# S'assurer que zsh est listé dans /etc/shells
-if ! grep -q "$(which zsh)" /etc/shells; then
-    echo "📝 Ajout de ZSH à /etc/shells..."
-    command -v zsh | sudo tee -a /etc/shells >/dev/null 2>&1
-fi
-###> ZSH ###
+log_done "Installation terminée avec succès !"
 
-echo -e "\n✨ ${GREEN}Installation terminée avec succès !${NC} 🎉\n"
+# Afficher les versions installées
+log_section "Versions installées"
+command_exists git && log_version "Git" "$(git --version | cut -d' ' -f3)"
+command_exists zsh && log_version "ZSH" "$(zsh --version | cut -d' ' -f2)"
+command_exists starship && log_version "Starship" "$(starship --version | cut -d' ' -f2)"
