@@ -8,6 +8,11 @@ auto = true
 prefer = newer
 confirmbigdel = false
 
+# Gestion des permissions pour Windows
+perms = 0
+dontchmod = true
+fat = true
+
 # Exclusions
 ignore = Path */vendor
 ignore = Path */node_modules
