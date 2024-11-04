@@ -54,7 +54,7 @@ if ! grep -q "$HOME/bin" "$HOME/.bashrc"; then
 fi
 
 echo -e "\n✨ ${GREEN}Configuration terminée !${NC} 🎉\n"
-echo -e "Pour synchroniser vos dossiers, utilisez la commande : ${BOLD}dev-sync${NC}"
+echo -e "Pour synchroniser vos dossiers, utilisez la commande : ${BOLD}unison dev-sync${NC}"
 echo -e "Vos dossiers de développement sont :"
 echo -e "  - Linux : ${BLUE}$DEV_DIR${NC}"
 echo -e "  - Windows : ${BLUE}$WINDOWS_DIR${NC}"
