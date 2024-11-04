@@ -1,18 +1,12 @@
 # Dotfiles
 This is my dotfiles for my WSL environment powered by [chezmoi](https://github.com/twpayne/chezmoi)
 
-## Add - Env Variable
+## Run
 ```
-export GITHUB_USERNAME=nsbx
-export EDITOR=nano
-```
-
-## Install - Chezmoi
-```
+echo 'export GITHUB_USERNAME=nsbx' >> ~/.bashrc
+echo 'export EDITOR=nano' >> ~/.bashrc
+source ~/.bashrc
 sudo sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /bin
-```
-
-## Apply - Chezmoi script
-```
-chezmoi init --apply $GITHUB_USERNAME
+chezmoi init $GITHUB_USERNAME
+chezmoi apply
 ```
