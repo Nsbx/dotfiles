@@ -20,10 +20,6 @@ mkdir -p "$DEV_DIR"
 echo -e "📁 Vérification du dossier Windows dans ${BLUE}$WINDOWS_DIR${NC}..."
 mkdir -p "$WINDOWS_DIR"
 
-# Créer le script de synchronisation
-SYNC_SCRIPT="$HOME/bin/dev-sync"
-mkdir -p "$HOME/bin"
-
 echo -e "📝 Création du script de synchronisation dans ${BLUE}$SYNC_SCRIPT${NC}..."
 cat > "$SYNC_SCRIPT" << 'EOL'
 #!/bin/bash
