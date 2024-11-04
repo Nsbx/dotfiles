@@ -24,14 +24,6 @@ mkdir -p "$WINDOWS_DIR"
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo -e "${GREEN}🔄 Synchronisation en cours...${NC}"
-unison dev-sync
-
-EOL
-
-# Rendre le script exécutable
-chmod +x "$SYNC_SCRIPT"
-
 # Installer unison si ce n'est pas déjà fait
 if ! command -v unison >/dev/null 2>&1; then
     echo -e "📦 Installation de ${BLUE}unison${NC}..."
