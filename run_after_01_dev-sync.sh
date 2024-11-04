@@ -4,9 +4,12 @@
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-if command -v unison >/dev/null 2>&1; then
-    echo -e "${GREEN}🔄 Lancement de la synchronisation dev...${NC}"
-    unison dev-sync
+if output=$(unison dev-sync 2>&1); then
+    # Si la synchronisation réussit, n'afficher que le succès
+    echo -e "${GREEN}✅ Synchronisation terminée${NC}"
 else
-    echo "⚠️  Unison n'est pas installé. Veuillez d'abord exécuter le script d'installation."
+    # En cas d'erreur, afficher le message d'erreur
+    echo -e "${RED}❌ Erreur de synchronisation :${NC}"
+    echo "$output"
+    exit 1
 fi
