@@ -20,10 +20,6 @@ mkdir -p "$DEV_DIR"
 echo -e "📁 Vérification du dossier Windows dans ${BLUE}$WINDOWS_DIR${NC}..."
 mkdir -p "$WINDOWS_DIR"
 
-echo -e "📝 Création du script de synchronisation dans ${BLUE}$SYNC_SCRIPT${NC}..."
-cat > "$SYNC_SCRIPT" << 'EOL'
-#!/bin/bash
-
 # Couleurs
 GREEN='\033[0;32m'
 NC='\033[0m'
