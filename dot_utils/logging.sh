@@ -100,17 +100,9 @@ log_section() {
     echo -e "\n${LOG_COLORS[bold]}${LOG_ICONS[setup]} $1${LOG_COLORS[default]}\n"
 }
 
-# Fonction pour afficher une commande en cours d'exécution
-log_command() {
-    log "pending" "Exécution: $1" "dim"
-}
-
 # Fonction pour les opérations silencieuses avec retour de statut
 run_silent() {
     local command=$1
-    local message=${2:-"Exécution de la commande..."}
-    
-    log_command "$message"
     if eval "$command" >/dev/null 2>&1; then
         return 0
     else
