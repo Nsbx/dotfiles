@@ -9,7 +9,7 @@ alias ssh-add='ssh-add.exe'
 
 ###> Directory ###
 alias home="cd ~"
-alias dev="cd ~/Dev"
+alias dev="cd ~/dev"
 ###< Directory
 
 ###> PHP ###
