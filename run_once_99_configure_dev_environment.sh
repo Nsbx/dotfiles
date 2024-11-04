@@ -1,44 +1,66 @@
 #!/bin/bash
 
-# Couleurs et styles
-BLUE='\033[0;34m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-BOLD='\033[1m'
+# run_once_99_configure_dev_environment.sh
+# =============================================================================
+# Configuration de l'environnement de développement
+
+# Charger les fonctions de logging
+source ~/.utils/logging.sh
 
 # Configuration
 DEV_DIR="$HOME/dev"
 WINDOWS_DIR="/mnt/n/Dev"
 UNISON_DIR="$HOME/.unison"
 
+log_section "Configuration de l'environnement de développement"
+
 # Créer le dossier de développement
-echo -e "📁 Création du dossier dev dans ${BLUE}$DEV_DIR${NC}..."
-mkdir -p "$DEV_DIR"
-
-# Créer le dossier Windows s'il n'existe pas
-echo -e "📁 Vérification du dossier Windows dans ${BLUE}$WINDOWS_DIR${NC}..."
-mkdir -p "$WINDOWS_DIR"
-
-# Couleurs
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-# Installer unison si ce n'est pas déjà fait
-if ! command -v unison >/dev/null 2>&1; then
-    echo -e "📦 Installation de ${BLUE}unison${NC}..."
-    sudo apt-get update >/dev/null 2>&1
-    sudo apt-get install -y unison >/dev/null 2>&1
+log_pending "Création du dossier dev..."
+if run_silent "mkdir -p '$DEV_DIR'"; then
+    log_success "Dossier dev créé dans $DEV_DIR"
+else
+    log_error "Échec de la création du dossier dev"
+    exit 1
 fi
 
-# Ajouter le script au PATH si nécessaire
+# Créer le dossier Windows
+log_pending "Vérification du dossier Windows..."
+if run_silent "mkdir -p '$WINDOWS_DIR'"; then
+    log_success "Dossier Windows vérifié dans $WINDOWS_DIR"
+else
+    log_error "Échec de la création du dossier Windows"
+    exit 1
+fi
+
+# Installer unison
+if ! command_exists unison; then
+    log_install_start "Unison"
+    if run_silent "sudo apt-get update && sudo apt-get install -y unison"; then
+        log_install_done "Unison"
+    else
+        log_error "Échec de l'installation d'Unison"
+        exit 1
+    fi
+else
+    log_install_skip "Unison"
+fi
+
+# Configuration du PATH
 if ! grep -q "$HOME/bin" "$HOME/.bashrc"; then
+    log_pending "Configuration du PATH..."
     echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
     echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.zshrc"
+    log_success "PATH mis à jour"
 fi
 
-echo -e "\n✨ ${GREEN}Configuration terminée !${NC} 🎉\n"
-echo -e "Pour synchroniser vos dossiers, utilisez la commande : ${BOLD}unison dev-sync${NC}"
-echo -e "Vos dossiers de développement sont :"
-echo -e "  - Linux : ${BLUE}$DEV_DIR${NC}"
-echo -e "  - Windows : ${BLUE}$WINDOWS_DIR${NC}"
+log_done "Configuration terminée !"
+
+log_section "Informations de l'environnement"
+log_info "Pour synchroniser vos dossiers, utilisez la commande: unison dev-sync"
+echo -e "\nVos dossiers de développement sont :"
+log_version "Linux" "$DEV_DIR"
+log_version "Windows" "$WINDOWS_DIR"
+
+if command_exists unison; then
+    log_version "Unison" "$(unison -version | head -n1 | cut -d' ' -f3)"
+fi
