@@ -63,11 +63,11 @@ fi
 # Installation de Node.js via NVM
 if ! command_exists nvm; then
     echo -e "📦 ${YELLOW}Installation de NVM...${NC}"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash >/dev/null 2>&1
+    curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash >/dev/null 2>&1
     
     # Charger NVM
     export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" >/dev/null 2>&1
     
     # Ajouter NVM au shell
     if ! grep -q "NVM_DIR" "$HOME/.zshrc"; then
@@ -86,9 +86,9 @@ echo -e "\n✨ ${GREEN}Installation terminée !${NC} 🎉\n"
 
 # Afficher les versions installées
 echo -e "${BOLD}Versions installées :${NC}"
-echo -e "PHP: $(php -v | grep -Eo 'PHP [0-9]+\.[0-9]+\.[0-9]+' | head -1)"
-echo -e "Composer: $(composer --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
-echo -e "Symfony CLI: $(symfony version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
+echo -e "PHP: $(php -v 2>/dev/null | grep -Eo 'PHP [0-9]+\.[0-9]+\.[0-9]+' | head -1 | cut -d' ' -f2)"
+echo -e "Composer: $(composer --version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
+echo -e "Symfony CLI: $(symfony version --no-ansi 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
 echo -e "Node.js: $(node -v)"
 echo -e "NPM: $(npm -v)"
 
