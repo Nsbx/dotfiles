@@ -11,6 +11,7 @@ alias ports='netstat -tulanp'
 alias disk='df -h'
 alias mem='free -h'
 alias top='htop'
+alias sp="switch_path"
 ###< Utils ###
 
 ###> WSL Related ###

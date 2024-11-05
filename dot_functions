@@ -1,3 +1,40 @@
 # ~/.functions
 # =============================================================================
 # Shell functions sourced by `~/.bashrc` and `~/.zshrc`.
+
+switch_path() {
+    # Définition des chemins de base
+    local WSL_BASE="$HOME/dev"
+    local WIN_BASE="/mnt/n/Dev"
+    local current_path="$PWD"
+
+    # Vérifier si le chemin actuel est sous Windows (/mnt/...)
+    if [[ "$current_path" == "/mnt/"* ]]; then
+        # Convertir le chemin Windows en chemin WSL
+        local relative_path="${current_path#$WIN_BASE}"
+        local new_path="$WSL_BASE$relative_path"
+        
+        if [ -d "$new_path" ]; then
+            cd "$new_path"
+            echo "🐧 Switched to WSL path: $new_path"
+        else
+            echo "❌ Equivalent WSL path not found: $new_path"
+        fi
+    # Vérifier si le chemin actuel est sous WSL (~/dev)
+    elif [[ "$current_path" == "$WSL_BASE"* ]]; then
+        # Convertir le chemin WSL en chemin Windows
+        local relative_path="${current_path#$WSL_BASE}"
+        local new_path="$WIN_BASE$relative_path"
+        
+        if [ -d "$new_path" ]; then
+            cd "$new_path"
+            echo " Switched to Windows path: $new_path"
+        else
+            echo "❌ Equivalent Windows path not found: $new_path"
+        fi
+    else
+        echo "⚠️ Current path is not in a synced directory"
+        echo "WSL base: $WSL_BASE"
+        echo "Windows base: $WIN_BASE"
+    fi
+}
