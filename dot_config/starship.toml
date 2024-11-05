@@ -3,8 +3,8 @@
 
 format = """
 $os\
+$custom\
 $sudo\
-$devbox_shell\
 $all\
 $directory\
 $git_branch\
@@ -39,7 +39,7 @@ style = 'bg:yellow fg:black'
 [os]
 disabled = false
 format = '[ $symbol ]($style)'
-style = 'fg:black bg:white'
+style = 'fg:white bg:#E95420'
 
 [directory]
 truncation_length = 3
@@ -75,14 +75,16 @@ disabled = false
 format = '[ $time  ]($style)'
 style = 'fg:black bg:white'
 
-#[devbox_shell]
-#disabled = false
-#symbol = ''
-#style = 'bold bg:purple fg:white'
+[custom.windows_path]
+when = """ ! test "$PWD" = "${PWD#/mnt/[c-z]}" """
+format = '[ $symbol ]($style)'
+style = 'fg:white bg:#0078D4'
+symbol = ''
 
 [directory.substitutions]
 '~' = ''
 'Dev' = ''
+'dev' = ''
 'Perso' = ''
 'Documents' = ''
 'Downloads' = ''
